@@ -1,0 +1,24 @@
+# depslib dependency file v1.0
+1492385449 source:c:\users\user\desktop\assignment10\ishapes.cpp
+	<iostream>
+	<fstream>
+	<string>
+	<vector>
+	<cmath>
+	"iShapes.h"
+
+1492385449 c:\users\user\desktop\assignment10\ishapes.h
+	<string>
+	<vector>
+	<cstdlib>
+
+1492386354 source:c:\users\user\desktop\assignment10\shapes.5.cpp
+	<fstream>
+	<iostream>
+	<iterator>
+	<string>
+	<sstream>
+	<vector>
+	<cstring>
+	"iShapes.h"
+

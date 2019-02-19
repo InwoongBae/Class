@@ -1,0 +1,17 @@
+# depslib dependency file v1.0
+1490132788 source:c:\users\user\desktop\assignment7\main.cpp
+	<iostream>
+	<sstream>
+	<string>
+	<vector>
+	<set>
+	<cstring>
+
+1490234675 source:c:\users\user\desktop\comsc-200\assignment7\main.cpp
+	<iostream>
+	<sstream>
+	<string>
+	<vector>
+	<set>
+	<cstring>
+

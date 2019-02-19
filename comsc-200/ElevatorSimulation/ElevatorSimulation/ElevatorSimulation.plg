@@ -1,0 +1,31 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: ElevatorSimulation - Win32 Debug--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating temporary file "C:\DOCUME~1\ET116\LOCALS~1\Temp\RSPDD.tmp" with contents
+[
+/nologo /subsystem:windows /incremental:yes /pdb:"Debug/ElevatorSimulation.pdb" /debug /machine:I386 /out:"Debug/ElevatorSimulation.exe" /pdbtype:sept 
+.\Debug\ElevatorSimulation.obj
+.\Debug\ElevatorSimulationDlg.obj
+.\Debug\StdAfx.obj
+.\Debug\ElevatorSimulation.res
+.\Debug\Building.obj
+.\Debug\Elevator.obj
+.\Debug\Floor.obj
+.\Debug\Rider.obj
+]
+Creating command line "link.exe @C:\DOCUME~1\ET116\LOCALS~1\Temp\RSPDD.tmp"
+<h3>Output Window</h3>
+Linking...
+
+
+
+<h3>Results</h3>
+ElevatorSimulation.exe - 0 error(s), 0 warning(s)
+</pre>
+</body>
+</html>

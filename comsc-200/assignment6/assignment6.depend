@@ -1,0 +1,8 @@
+# depslib dependency file v1.0
+1489467188 source:c:\users\user\desktop\assignment6\main.cpp
+	<iostream>
+	<sstream>
+	<string>
+	<vector>
+	<cstring>
+

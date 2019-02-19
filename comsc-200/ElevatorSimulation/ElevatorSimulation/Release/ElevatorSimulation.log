@@ -1,0 +1,15 @@
+﻿  StdAfx.cpp
+C:\Program Files (x86)\Microsoft Visual Studio\Shared\14.0\VC\atlmfc\include\afx.h(38): warning C4996: 'MBCS_Support_Deprecated_In_MFC': MBCS support in MFC is deprecated and may be removed in a future version of MFC.
+  C:\Program Files (x86)\Microsoft Visual Studio\Shared\14.0\VC\atlmfc\include\afx.h(33): note: see declaration of 'MBCS_Support_Deprecated_In_MFC'
+  ElevatorSimulation.cpp
+  ElevatorSimulationDlg.cpp
+  main.cpp
+main.cpp(19): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+  VisualBuilding.cpp
+  VisualElevator.cpp
+  VisualFloor.cpp
+  VisualPanel.cpp
+  VisualRider.cpp
+  Generating Code...
+  ElevatorSimulation.vcxproj -> C:\Users\User\Desktop\comsc-200\ElevatorSimulation\ElevatorSimulation\.\Release\ElevatorSimulation.exe
+  ElevatorSimulation.vcxproj -> .\Release/ElevatorSimulation.pdb (Full PDB)

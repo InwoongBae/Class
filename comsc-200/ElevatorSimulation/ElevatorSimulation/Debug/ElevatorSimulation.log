@@ -1,0 +1,19 @@
+﻿  StdAfx.cpp
+c:\program files (x86)\microsoft visual studio\shared\14.0\vc\atlmfc\include\afx.h(38): warning C4996: 'MBCS_Support_Deprecated_In_MFC': MBCS support in MFC is deprecated and may be removed in a future version of MFC.
+  c:\program files (x86)\microsoft visual studio\shared\14.0\vc\atlmfc\include\afx.h(33): note: see declaration of 'MBCS_Support_Deprecated_In_MFC'
+  ElevatorSimulation.cpp
+  ElevatorSimulationDlg.cpp
+  VisualBuilding.cpp
+  VisualElevator.cpp
+c:\users\user\desktop\comsc-200\elevatorsimulation\elevatorsimulation\elevator.cpp(73): warning C4018: '<': signed/unsigned mismatch
+c:\users\user\desktop\comsc-200\elevatorsimulation\elevatorsimulation\elevator.cpp(83): warning C4018: '<': signed/unsigned mismatch
+  VisualFloor.cpp
+  VisualPanel.cpp
+  VisualRider.cpp
+  Running Code Analysis for C/C++...
+  Generating Code...
+ElevatorSimulation.obj : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/OPT:LBR' specification
+  ElevatorSimulation.vcxproj -> C:\Users\User\Desktop\comsc-200\ElevatorSimulation\ElevatorSimulation\.\Debug\ElevatorSimulation.exe
+  ElevatorSimulation.vcxproj -> .\Debug/ElevatorSimulation.pdb (Full PDB)
+c:\users\user\desktop\comsc-200\elevatorsimulation\elevatorsimulation\elevatorsimulationdlg.cpp(118): warning C6031: Return value ignored: 'ATL::CStringT<char,StrTraitMFC<char,ATL::ChTraitsCRT<char> > >::LoadStringA'.
+c:\program files (x86)\microsoft visual studio\shared\14.0\vc\atlmfc\include\atliface.h(125): warning C28251: Inconsistent annotation for 'MIDL_user_allocate': this instance has no annotated parameters. See c:\program files (x86)\windows kits\10\include\10.0.15063.0\shared\rpcndr.h(238). 

@@ -1,0 +1,9 @@
+# depslib dependency file v1.0
+1490054771 source:c:\users\user\desktop\soon\main.cpp
+	<iostream>
+	<vector>
+	<string>
+	<set>
+	<sstream>
+	<cstring>
+

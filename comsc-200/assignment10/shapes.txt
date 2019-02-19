@@ -1,0 +1,543 @@
+// identification comments code block
+// Programmer: Inwoong Bae
+// Programmer's ID: 1505170
+
+#ifndef iShapes_h
+#define iShapes_h
+
+#include <string>
+#include <vector>
+using namespace std;
+
+#include <cstdlib>
+
+struct Shape{};
+
+struct Square : public Shape
+{
+  Square(const vector<string>& tokens) : side(tokens.size() >= 2 ? atof(tokens[1].c_str()) : 0){}
+  void outputSquare(ostream&) const;
+  Square& operator=(const Square&);
+
+  protected:
+  const double side;
+};
+
+struct Cube : public Square
+{
+  Cube(const vector<string>& tokens) : Square(tokens){}
+  void outputCube(ostream&) const;
+  Cube& operator=(const Cube&);
+};
+
+struct Rectangle : public Shape
+{
+  Rectangle(const vector<string>& tokens) : length(tokens.size() >= 2 ? atof(tokens[1].c_str()) : 0), width(tokens.size() >= 3 ? atof(tokens[2].c_str()) : 0){}
+  void outputRectangle(ostream&) const;
+  Rectangle& operator=(const Rectangle&);
+
+  protected:
+  const double length;
+  const double width;
+};
+
+struct Box : public Rectangle
+{
+  Box(const vector<string>& tokens) : Rectangle(tokens), height(tokens.size() >= 4 ? atof(tokens[3].c_str()) : 0){}
+  void outputBox(ostream&) const;
+  Box& operator=(const Box&);
+
+  protected:
+  const double height;
+};
+
+struct Circle : public Shape
+{
+  Circle(const vector<string>& tokens) : radius(tokens.size() >= 2 ? atof(tokens[1].c_str()) : 0){}
+  void outputCircle(ostream&) const;
+  Circle& operator=(const Circle&);
+
+  protected:
+  const double radius;
+};
+
+struct Cylinder : public Circle
+{
+  Cylinder(vector<string> tokens) : Circle(tokens), height(tokens.size() >= 3 ? atof(tokens[2].c_str()) : 0){}
+  void outputCylinder(ostream&) const;
+  Cylinder& operator=(const Cylinder&);
+
+  protected:
+  const double height;
+};
+
+struct Triangle : public Shape
+{
+  Triangle(const vector<string>& tokens) : side(tokens.size() >= 2 ? atof(tokens[1].c_str()) : 0){}
+  void outputTriangle(ostream&) const;
+  Triangle& operator=(const Triangle&);
+
+  protected:
+  const double side;
+};
+
+struct Prism : public Triangle
+{
+  Prism(vector<string> tokens) : Triangle(tokens), height(tokens.size() >= 2 ? atof(tokens[1].c_str()) : 0){}
+  void outputPrism(ostream&) const;
+  Prism& operator=(const Prism&);
+
+  protected:
+  const double height;
+};
+#endif
+
+
+iShapes.cpp
+
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <vector>
+using namespace std;
+
+#include <cmath>
+
+#include "iShapes.h"
+
+const double PI = 3.14159265359;
+
+
+ostream& roundingOn(ostream& out)
+{
+  out.setf(ios::fixed);
+  out.precision(2);
+  return out;
+}
+
+ostream& roundingOff(ostream& out)
+{
+  out.unsetf(ios::fixed);
+  out.precision(6);
+  return out;
+}
+
+void Square::outputSquare(ostream& out) const
+{
+  const double area = side * side;
+  const double perimeter = side * 4;
+  out << "SQUARE side=" << side;
+  out << roundingOn;
+  out << " area=" << area << " perimeter=" << perimeter;
+  out << roundingOff;
+  out << "\n";
+}
+
+Square& Square::operator=(const Square& copyThis)
+{
+  Square& host = *this;
+  if(this != &copyThis)
+    const_cast<double&>(host.side) = copyThis.side;
+  return host;
+}
+
+void Rectangle::outputRectangle(ostream& out) const
+{
+  const double area = length * width;
+  const double perimeter = (length + width) * 2;
+  out << "RECTANGLE length=" << length << " width=" << width;
+  out << roundingOn;
+  out << " area=" << area << " perimeter=" << perimeter;
+  out << roundingOff;
+  out << "\n";
+}
+
+Rectangle& Rectangle::operator=(const Rectangle& copyThis)
+{
+  Rectangle& host = *this;
+  if(this != &copyThis)
+  {
+    const_cast<double&>(host.length) = copyThis.length;
+    const_cast<double&>(host.width) = copyThis.width;
+  }
+  return host;
+}
+
+void Triangle::outputTriangle(ostream& out) const
+{
+  const double area = 0.5 * side * side * 0.5 * sqrt(3.0);
+  const double perimeter = side * 3;
+  out << "TRIANGLE side=" << side;
+  out << roundingOn;
+  out << " area=" << area << " perimeter=" << perimeter;
+  out << roundingOff;
+  out << "\n";
+}
+
+Triangle& Triangle::operator=(const Triangle& copyThis)
+{
+  Triangle& host = *this;
+  if(this != &copyThis)
+    const_cast<double&>(host.side) = copyThis.side;
+  return host;
+}
+
+void Circle::outputCircle(ostream& out) const
+{
+  const double area = PI * radius * radius;
+  const double perimeter = 2 * PI * radius;
+  out << "CIRCLE radius=" << radius;
+  out << roundingOn;
+  out << " area=" << area << " perimeter=" << perimeter;
+  out << roundingOff;
+  out << "\n";
+}
+
+Circle& Circle::operator=(const Circle& copyThis)
+{
+  Circle& host = *this;
+  if(this != &copyThis)
+    const_cast<double&>(host.radius) = copyThis.radius;
+  return host;
+}
+
+void Cylinder::outputCylinder(ostream& out) const
+{
+  double surface = 2 * PI * radius * radius + 2 * PI * radius * height;
+  double volume = PI * radius * radius * height;
+  out << "CYLINDER radius=" << radius << " height=" << height;
+  out << roundingOn;
+  out << " surface=" << surface << " volume=" << volume;
+  out << roundingOff;
+  out << "\n";
+}
+
+Cylinder& Cylinder::operator=(const Cylinder& copyThis)
+{
+  Cylinder& host = *this;
+  if(this != &copyThis)
+  {
+    const_cast<double&>(host.radius) = copyThis.radius;
+    const_cast<double&>(host.height) = copyThis.height;
+  }
+  return host;
+}
+
+void Cube::outputCube(ostream& out) const
+{
+  const double surface = 6 * side * side;
+  const double volume = side * side * side;
+  out << "CUBE side=" << side;
+  out << roundingOn;
+  out << " surface=" << surface << " volume=" << volume;
+  out << roundingOff;
+  out << "\n";
+}
+
+Cube& Cube::operator=(const Cube& copyThis)
+{
+  Cube& host = *this;
+  if(this != &copyThis)
+    const_cast<double&>(host.side) = copyThis.side;
+  return host;
+}
+
+void Prism::outputPrism(ostream& out) const
+{
+  const double surface = 2 * 0.5 * side * side * 0.5 * sqrt(3.0) + 3 * side * height;
+  const double volume = 0.5 * side * side * 0.5 * sqrt(3.0) * height;
+  out << "PRISM side=" << side << " height=" << height;
+  out << roundingOn;
+  out << " surface=" << surface << " volume=" << volume;
+  out << roundingOff;
+  out << "\n";
+}
+
+Prism& Prism::operator=(const Prism& copyThis)
+{
+  Prism& host = *this;
+  if(this != &copyThis)
+  {
+    const_cast<double&>(host.side) = copyThis.side;
+    const_cast<double&>(host.height) = copyThis.height;
+  }
+  return host;
+}
+
+void Box::outputBox(ostream& out) const
+{
+  const double surface = 2 * length * width + 2 * length * height + 2 * width * height;
+  const double volume = length * width * height;
+  out << "BOX length=" << length << " width=" << width << " height=" << height;
+  out << roundingOn;
+  out << " surface=" << surface << " volume=" << volume;
+  out << roundingOff;
+  out << "\n";
+}
+
+Box& Box::operator=(const Box& copyThis)
+{
+  Box& host = *this;
+  if(this != &copyThis)
+  {
+    const_cast<double&>(host.length) = copyThis.length;
+    const_cast<double&>(host.width) = copyThis.width;
+    const_cast<double&>(host.height) = copyThis.height;
+  }
+  return host;
+}
+
+Shapes.5.cpp
+
+#include <fstream>
+#include <iostream>
+#include <iterator>
+#include <string>
+#include <sstream>
+#include <vector>
+using namespace std;
+
+#include <cstring>
+
+#include "iShapes.h"
+
+vector<string> parseString(string);
+
+int main()
+{
+  cout << "Programmer: Inwoong Bae\n";
+  cout << "Programmer's ID: 1505170\n";
+  cout << "File: " << __FILE__ << endl;
+
+  ifstream fin;
+  ofstream fout;
+  vector<string> tokens;
+  string data;
+  vector<const void*> myBag;
+  vector<char> myBagType;
+
+  fin.open("Shapes.input.txt");
+  fout.open("Shapes.output.txt");
+
+  while(fin.good())
+  {
+    getline(fin, data);
+    tokens = parseString(data);
+
+    if(tokens.size() == 0 )
+      continue;
+    else if(strcmp(tokens[0].c_str(), "SQUARE") == 0)
+    {
+      const Square* const s = new Square(tokens);
+      myBag.push_back(s);
+      myBagType.push_back('s');
+    }
+    else if(strcmp(tokens[0].c_str(), "RECTANGLE") == 0)
+    {
+      const Rectangle* const r = new Rectangle(tokens);
+      myBag.push_back(r);
+      myBagType.push_back('r');
+    }
+    else if(strcmp(tokens[0].c_str(), "TRIANGLE") == 0)
+    {
+      const Triangle* const t = new Triangle(tokens);
+      myBag.push_back(t);
+      myBagType.push_back('t');
+    }
+    else if(strcmp(tokens[0].c_str(), "CIRCLE") == 0)
+    {
+      const Circle* const c = new Circle(tokens);
+      myBag.push_back(c);
+      myBagType.push_back('c');
+    }
+    else if(strcmp(tokens[0].c_str(), "CYLINDER") == 0)
+    {
+      const Cylinder* const y = new Cylinder(tokens);
+      myBag.push_back(y);
+      myBagType.push_back('y');
+    }
+    else if(strcmp(tokens[0].c_str(), "CUBE") == 0)
+    {
+      const Cube* const u = new Cube(tokens);
+      myBag.push_back(u);
+      myBagType.push_back('u');
+    }
+    else if(strcmp(tokens[0].c_str(), "BOX") == 0)
+    {
+      const Box* const b = new Box(tokens);
+      myBag.push_back(b);
+      myBagType.push_back('b');
+    }
+    else if(strcmp(tokens[0].c_str(), "PRISM") == 0)
+    {
+      const Prism* const p = new Prism(tokens);
+      myBag.push_back(p);
+      myBagType.push_back('p');
+    }
+    else if(strcmp(tokens[0].c_str(), "EOF") == 0)
+      break;
+    else
+    {
+      cout << tokens[0] << " invalid object\n";
+    }
+  }
+
+  fin.close();
+
+  for (unsigned int i = 0; i < myBag.size(); i++)
+  {
+    if (myBagType[i] == 's')
+    {
+      const Square* const pSquare = reinterpret_cast<const Square*>(myBag[i]);
+      const Square& rSquare = *pSquare;
+      rSquare.outputSquare(fout);
+    }
+    else if (myBagType[i] == 'r')
+    {
+      const Rectangle* const pRectangle = reinterpret_cast<const Rectangle*>(myBag[i]);
+      const Rectangle& rRectangle = *pRectangle;
+      rRectangle.outputRectangle(fout);
+    }
+    else if (myBagType[i] == 'c')
+    {
+      const Circle* const pCircle = reinterpret_cast<const Circle*>(myBag[i]);
+      const Circle& rCircle = *pCircle;
+      rCircle.outputCircle(fout);
+    }
+    else if (myBagType[i] == 't')
+    {
+      const Triangle* const pTriangle = reinterpret_cast<const Triangle*>(myBag[i]);
+      const Triangle& rTriangle = *pTriangle;
+      rTriangle.outputTriangle(fout);
+    }
+    else if (myBagType[i] == 'u')
+    {
+      const Cube* const pCube = reinterpret_cast<const Cube*>(myBag[i]);
+      const Cube& rCube = *pCube;
+      rCube.outputCube(fout);
+    }
+    else if (myBagType[i] == 'b')
+    {
+      const Box* const pBox = reinterpret_cast<const Box*>(myBag[i]);
+      const Box& rBox = *pBox;
+      rBox.outputBox(fout);
+    }
+    else if (myBagType[i] == 'y')
+    {
+      const Cylinder* const pCylinder = reinterpret_cast<const Cylinder*>(myBag[i]);
+      const Cylinder& rCylinder = *pCylinder;
+      rCylinder.outputCylinder(fout);
+    }
+    else if (myBagType[i] == 'p')
+    {
+      const Prism* const pPrism = reinterpret_cast<const Prism*>(myBag[i]);
+      const Prism& rPrism = *pPrism;
+      rPrism.outputPrism(fout);
+    }
+  }
+
+  fout.close();
+
+  for (unsigned int i = 0; i < myBag.size(); i++)
+  {
+    if (myBagType[i] == 's')
+    {
+      const Square* const pSquare = reinterpret_cast<const Square*>(myBag[i]);
+      const Square& rSquare = *pSquare;
+      rSquare.outputSquare(cout);
+    }
+    else if (myBagType[i] == 'r')
+    {
+      const Rectangle* const pRectangle = reinterpret_cast<const Rectangle*>(myBag[i]);
+      const Rectangle& rRectangle = *pRectangle;
+      rRectangle.outputRectangle(cout);
+    }
+    else if (myBagType[i] == 'c')
+    {
+      const Circle* const pCircle = reinterpret_cast<const Circle*>(myBag[i]);
+      const Circle& rCircle = *pCircle;
+      rCircle.outputCircle(cout);
+    }
+    else if (myBagType[i] == 't')
+    {
+      const Triangle* const pTriangle = reinterpret_cast<const Triangle*>(myBag[i]);
+      const Triangle& rTriangle = *pTriangle;
+      rTriangle.outputTriangle(cout);
+    }
+    else if (myBagType[i] == 'u')
+    {
+      const Cube* const pCube = reinterpret_cast<const Cube*>(myBag[i]);
+      const Cube& rCube = *pCube;
+      rCube.outputCube(cout);
+    }
+    else if (myBagType[i] == 'b')
+    {
+      const Box* const pBox = reinterpret_cast<const Box*>(myBag[i]);
+      const Box& rBox = *pBox;
+      rBox.outputBox(cout);
+    }
+    else if (myBagType[i] == 'y')
+    {
+      const Cylinder* const pCylinder = reinterpret_cast<const Cylinder*>(myBag[i]);
+      const Cylinder& rCylinder = *pCylinder;
+      rCylinder.outputCylinder(cout);
+    }
+    else if (myBagType[i] == 'p')
+    {
+      const Prism* const pPrism = reinterpret_cast<const Prism*>(myBag[i]);
+      const Prism& rPrism = *pPrism;
+      rPrism.outputPrism(cout);
+    }
+  }
+
+  for (unsigned int i = 0; i < myBag.size(); i++)
+  {
+    if (myBagType[i] == 's')
+    {
+      const Square* const pSquare = reinterpret_cast<const Square*>(myBag[i]);
+      delete pSquare;
+    }
+    else if (myBagType[i] == 'r')
+    {
+      const Rectangle* const pRectangle = reinterpret_cast<const Rectangle*>(myBag[i]);
+      delete pRectangle;
+    }
+    else if (myBagType[i] == 'c')
+    {
+      const Circle* const pCircle = reinterpret_cast<const Circle*>(myBag[i]);
+      delete pCircle;
+    }
+    else if (myBagType[i] == 't')
+    {
+      const Triangle* const pTriangle = reinterpret_cast<const Triangle*>(myBag[i]);
+      delete pTriangle;
+    }
+    else if (myBagType[i] == 'u')
+    {
+      const Cube* const pCube = reinterpret_cast<const Cube*>(myBag[i]);
+      delete pCube;
+    }
+    else if (myBagType[i] == 'b')
+    {
+      const Box* const pBox = reinterpret_cast<const Box*>(myBag[i]);
+      delete pBox;
+    }
+    else if (myBagType[i] == 'y')
+    {
+      const Cylinder* const pCylinder = reinterpret_cast<const Cylinder*>(myBag[i]);
+      delete pCylinder;
+    }
+    else if (myBagType[i] == 'p')
+    {
+      const Prism* const pPrism = reinterpret_cast<const Prism*>(myBag[i]);
+      delete pPrism;
+    }
+  }
+}
+
+vector<string> parseString(string str)
+{
+  stringstream s(str);
+  istream_iterator<string> begin(s), end;
+  return vector<string>(begin, end);
+}

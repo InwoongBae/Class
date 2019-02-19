@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DEFECTS>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>c:\program files (x86)\microsoft visual studio\shared\14.0\vc\atlmfc\include\</FILEPATH>
+      <FILENAME>atliface.h</FILENAME>
+      <LINE>125</LINE>
+      <COLUMN>18</COLUMN>
+    </SFA>
+    <DEFECTCODE>28251</DEFECTCODE>
+    <DESCRIPTION>Inconsistent annotation for 'MIDL_user_allocate': this instance has no annotated parameters. See c:\program files (x86)\windows kits\10\include\10.0.15063.0\shared\rpcndr.h(238). </DESCRIPTION>
+    <FUNCTION>MIDL_user_allocate</FUNCTION>
+    <DECORATED>MIDL_user_allocate@4</DECORATED>
+    <FUNCLINE>125</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+</DEFECTS>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DEFECTS>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>c:\users\user\desktop\comsc-200\elevatorsimulation\elevatorsimulation\</FILEPATH>
+      <FILENAME>elevatorsimulationdlg.cpp</FILENAME>
+      <LINE>118</LINE>
+      <COLUMN>27</COLUMN>
+    </SFA>
+    <DEFECTCODE>6031</DEFECTCODE>
+    <DESCRIPTION>Return value ignored: 'ATL::CStringT&lt;char,StrTraitMFC&lt;char,ATL::ChTraitsCRT&lt;char&gt; &gt; &gt;::LoadStringA'.</DESCRIPTION>
+    <FUNCTION>CElevatorSimulationDlg::OnInitDialog</FUNCTION>
+    <DECORATED>?OnInitDialog@CElevatorSimulationDlg@@MAEHXZ</DECORATED>
+    <FUNCLINE>104</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+</DEFECTS>

@@ -1,0 +1,73 @@
+# depslib dependency file v1.0
+1495686484 source:c:\users\user\desktop\d\building.cpp
+	"Building.h"
+	"Floor.h"
+	"Elevator.h"
+	<iostream>
+	<cstdlib>
+	<cmath>
+
+1495495208 c:\users\user\desktop\d\building.h
+	"Floor.h"
+	"Elevator.h"
+
+1493683036 c:\users\user\desktop\d\floor.h
+	<iostream>
+	<string>
+	<queue>
+	"Panel.h"
+	"Rider.h"
+
+1491704910 c:\users\user\desktop\d\panel.h
+	<iostream>
+	<vector>
+	<string>
+
+1490994586 c:\users\user\desktop\d\rider.h
+
+1495684366 c:\users\user\desktop\d\elevator.h
+	<vector>
+	"Rider.h"
+	"Floor.h"
+	"Panel.h"
+
+1495686484 source:c:\users\user\desktop\d\elevator.cpp
+	"Elevator.h"
+	"Panel.h"
+	"Building.h"
+	<iostream>
+	<vector>
+	<cstdlib>
+
+1491799728 source:c:\users\user\desktop\d\floor.cpp
+	"Floor.h"
+	"Rider.h"
+	"Panel.h"
+	"Building.h"
+	<iostream>
+	<iomanip>
+	<string>
+	<vector>
+	<climits>
+
+1491706288 source:c:\users\user\desktop\d\panel.cpp
+	<iostream>
+	<vector>
+	<string>
+	"Panel.h"
+
+1490994586 source:c:\users\user\desktop\d\rider.cpp
+	"Rider.h"
+	"Building.h"
+
+1495689978 source:c:\users\user\desktop\d\main.cpp
+	<iostream>
+	<string>
+	<vector>
+	<cstdlib>
+	<ctime>
+	"Rider.h"
+	"Building.h"
+	"Floor.h"
+	"Panel.h"
+

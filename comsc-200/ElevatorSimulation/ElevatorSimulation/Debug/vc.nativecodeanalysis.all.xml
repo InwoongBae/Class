@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?><DEFECTS><DEFECT>
+    <SFA>
+      <FILEPATH>c:\users\user\desktop\comsc-200\elevatorsimulation\elevatorsimulation\</FILEPATH>
+      <FILENAME>elevatorsimulationdlg.cpp</FILENAME>
+      <LINE>118</LINE>
+      <COLUMN>27</COLUMN>
+    </SFA>
+    <DEFECTCODE>6031</DEFECTCODE>
+    <DESCRIPTION>Return value ignored: 'ATL::CStringT&lt;char,StrTraitMFC&lt;char,ATL::ChTraitsCRT&lt;char&gt; &gt; &gt;::LoadStringA'.</DESCRIPTION>
+    <FUNCTION>CElevatorSimulationDlg::OnInitDialog</FUNCTION>
+    <DECORATED>?OnInitDialog@CElevatorSimulationDlg@@MAEHXZ</DECORATED>
+    <FUNCLINE>104</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT><DEFECT>
+    <SFA>
+      <FILEPATH>c:\program files (x86)\microsoft visual studio\shared\14.0\vc\atlmfc\include\</FILEPATH>
+      <FILENAME>atliface.h</FILENAME>
+      <LINE>125</LINE>
+      <COLUMN>18</COLUMN>
+    </SFA>
+    <DEFECTCODE>28251</DEFECTCODE>
+    <DESCRIPTION>Inconsistent annotation for 'MIDL_user_allocate': this instance has no annotated parameters. See c:\program files (x86)\windows kits\10\include\10.0.15063.0\shared\rpcndr.h(238). </DESCRIPTION>
+    <FUNCTION>MIDL_user_allocate</FUNCTION>
+    <DECORATED>MIDL_user_allocate@4</DECORATED>
+    <FUNCLINE>125</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT></DEFECTS>

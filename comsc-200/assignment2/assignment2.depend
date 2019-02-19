@@ -1,0 +1,13 @@
+# depslib dependency file v1.0
+1487070926 source:c:\users\user\desktop\assignment2\main.cpp
+	<iostream>
+	<string>
+	<fstream>
+	<iterator>
+	<sstream>
+	<vector>
+	<iomanip>
+	<cmath>
+	<cstdlib>
+	<cstring>
+

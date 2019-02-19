@@ -1,0 +1,16 @@
+# depslib dependency file v1.0
+1493090346 source:c:\users\user\desktop\assignment11\main.cpp
+	<fstream>
+	<iostream>
+	<iterator>
+	<string>
+	<sstream>
+	<vector>
+	<cstring>
+	"pShapes.h"
+
+1493090227 c:\users\user\desktop\assignment11\pshapes.h
+	<string>
+	<vector>
+	<cstdlib>
+
