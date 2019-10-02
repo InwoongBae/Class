@@ -1,0 +1,91 @@
+---
+title: "Final Project"
+author: "Sunnie Oh, InWoong Bae"
+          
+output: 
+    pdf_document:
+          fig_height: 4
+          fig_width: 4
+          latex_engine: xelatex
+    includes:
+          in_header: latex/header.tex
+          before_body: latex/before_body.tex
+          after_body: latex/after_body.tex
+  
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+concrete<-read.table('Concrete.txt')
+summary(concrete)
+names(concrete)
+head(concrete)
+```
+
+```{r}
+mod.full<-lm(Y~.,data=concrete)
+anova(mod.full)
+```
+According to the anova table above, 1021=n-8-1. So n=1030
+
+a) forward selection with BIC
+```{r}
+mod.0<-lm(Y~1, data=concrete) #linear model with only intercepts
+mod.full<-lm(Y~.,data=concrete) #full model
+step(mod.0, scope = list(lower = mod.0, upper = mod.full), direction = 'forward', k = log(1030))
+```
+
+Do diagnostic checks 
+```{r}
+mod.for<-lm(Y ~ X1 + X5 + X8 + X2 + X4 + X3, data = concrete)
+plot(mod.for)
+```
+
+According to the plots, model by forward selection pretty fufills noramlity, linearity, and constant variance.
+
+Use influenceIndexPlot to find influential points to remove
+```{r}
+library(car)
+infIndexPlot(mod.for)
+```
+
+```{r}
+predict(mod.for, data.frame(X1= 200, X5=10, X8=100, X2=150, X4=180, X3=85),
+interval = 'confidence', level = 0.95)
+```
+We are 95% confident that true mean response is between 42.126 and 44.628
+```{r}
+predict(mod.for, data.frame(X1= 200, X5=10, X8=100, X2=150, X4=180, X3=85),
+interval = 'prediction', level = 0.95)
+```
+We are 95% confident that concrete compressive strength for and individual value of each predictor values is between 22.912 and 63.842
+
+(b) Backward elimination with BIC
+```{r}
+step(mod.full, scope = list(lower = mod.0, upper = mod.full), direction = 'backward', k = log(1030))
+```
+
+Do diagnostic checks
+```{r}
+mod.back<-lm(Y ~ X1 + X2 + X3 + X4 + X5 + X8, data=concrete)
+plot(mod.back)
+```
+
+According to the plots, model by forward selection pretty fufills noramlity, linearity, and constant variance.
+
+
+Use influenceIndexPlot to find influential points to remove
+```{r}
+library(car)
+infIndexPlot(mod.back)
+```
+
+```{r}
+anova(mod.for, mod.back)
+```
+
+The models derived by two differnt methods are same except for the order of predictors. 
+And the result of ANOVA also same.

@@ -1,0 +1,160 @@
+---
+title: "Project_PSTAT_126_Inwoong_Bae"
+author: "Inwoong Bae"
+date: "06/07/2019"
+output:
+  word_document: default
+  pdf_document: default
+---
+part 1
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+MyData <- read.table("RealEstateValuation.txt", header = TRUE)
+head(MyData)
+plot(MyData)
+#According to the plot among variables in the dataset from Real Estate Valuation, there seems no significant relationship between price and each factor.
+mod <- lm(Price ~ TDate + Age + Stores + Latitude, data = MyData)
+summary(mod)
+```
+let Y be price, x1 be TDate, x2 be Age, x3 be Stores, x4 be Latitude. then the equation for the fitted regression line is Y = -1.742e+04 + 3.613e+00*x1 - 3.020e-01*x2 + 1.929e+00*x3 + 4.078e+02 + error. By summary, the r-value of each variable except TDate is lower than 0.01. This means that the all variables except TDate are significant for this model. TDate is not significant for this model, so it can be removed to make the model become better model.
+
+```{r}
+#Suppose we add Metro or longitude on the previous model. 
+mod2 = lm(Price ~ TDate + Age + Stores + Latitude + Metro, data = MyData )
+mod3 = lm(Price ~ TDate + Age + Stores + Latitude + Longitude, data = MyData)
+
+#The null hypothesis for the original model and the the model that adds Metro is betha of Metro equals zero and the alternative hypothesis is the betha of Metro is nonzero. 
+anova(mod,mod2) #anova table for the original model and the the model with Metro
+
+#The null hypothesis for the original model and the the model that adds Longitude is betha of Longitude equals zero and the alternative hypothesis is the betha of Longitude is nonzero. 
+anova(mod,mod3) #anova table for the original model and the the model with Longitude
+#by the anova tables, p-values of Metro and Longitude are much lower than significant level = 0.05. Therefore, both are available to be added on the original model.  
+```
+```{r}
+#Suppose we have another possible model
+modSec <- lm(Price ~ TDate + Age + Metro + Latitude, data = MyData)
+summary(modSec)
+#The equation for the regression line is Price = -1.767e+4 + 5.570e+00 * TDate - 2.530e-01 * Age - 5.764e-03 * Metro + 2.607e+02 * Latitude.
+summary(mod)
+```
+In both model, global p-values are same, but p-values for each individual variable are different. In the first model, p-value for TDate is relatively high and it results in being insignificant for the model by some significance levels. However, in the second model, all p-values are low enough to be significant for all significance levels. Therefore, we prefer the second model.
+
+```{r}
+library(car)
+attach(MyData)
+outlierTest(modSec) #find outliers on original model
+newData <- MyData[c(1:220,222:270,272:312, 314:414),] #delete outliers
+newmodSec <- lm(Price ~ TDate + Age + Stores + Latitude, data = newData) #new dataset without outliers
+plot(newmodSec, which = 1)
+plot(newmodSec, which = 2)
+#When we see the Residuals vs Fitted, the line is not parallel at 0 and all points in Normal Q-Q plot are not in the line
+```
+Using the Box-Cox method, we see that λ = 0 is both in the interval, and extremely close to the maximum, which suggests a transformation of the form log(Price)
+```{r}
+boxCox(newmodSec, lambda = seq(-0.2, 0.4, by = 0.05), plotit = TRUE)
+modSec_cox <- lm(log(Price) ~ TDate + Age + Stores + Latitude, data = newData)
+summary(modSec_cox)
+#After modifying the model by Box-Cox method, we conclude that the model is not needed to be changed by Box-Cox method because the modified model has insignificant variable, TDate.
+```
+We now apply the powertransform method to the model.
+```{r}
+summary(Price)
+summary(TDate)
+summary(Age)
+summary(Metro)
+summary(Latitude)
+#Since Age has 0 value and it cannot be transformed by powerTransform. We therefore need to add a small constant to transform
+newData$Age1 <- with(newData, (Age*TDate + 1)/TDate)
+pt <- powerTransform(Price ~ cbind(TDate, Age1, Stores, Latitude), newData)
+summary(pt)
+pt$roundlam
+summary(newMod2 <- lm(bcPower(Price, pt$roundlam) ~ TDate + Age1 + Stores + Latitude, data = newData))
+plot(newMod2, which = 1)
+plot(newMod2, which = 2)
+```
+We apply polynomial fits
+```{r}
+quadratic.lm1 <- lm(Price ~ TDate  + Age + I(Age^2) + Stores + Latitude, data = newData)
+summary(quadratic.lm1)
+quadratic.lm2 <- lm(Price ~ TDate  + Age + I(Age^2) +I(Age^3)+ Stores + Latitude, data = newData)
+summary(quadratic.lm2)
+quadratic.lm3 <- lm(Price ~ TDate  + Age  + Stores + Latitude + I(Latitude^2), data = newData)
+summary(quadratic.lm3)
+#All polynomial fits does not get better than original one.
+```
+After modifying the model by transform methods, we cannot see any significantly positive changes and improvements.There are some influencial points such as outliers in this models and the influencial points distract us when we find the appropriate model. We conclude that transformation is unnecessary to apply because none of method affects to make it clear.
+
+Part 2
+```{r}
+concrete<-read.table('Concrete.txt')
+summary(concrete)
+names(concrete)
+head(concrete)
+```
+
+```{r}
+mod.full<-lm(Y~.,data=concrete)
+anova(mod.full)
+```
+According to the anova table above, 1021=n-8-1. So n=1030
+
+a) forward selection with BIC
+```{r}
+mod.0<-lm(Y~1, data=concrete) #linear model with only intercepts
+mod.full<-lm(Y~.,data=concrete) #full model
+step(mod.0, scope = list(lower = mod.0, upper = mod.full), direction = 'forward', k = log(1030))
+```
+
+Do diagnostic checks 
+```{r}
+mod.for<-lm(Y ~ X1 + X5 + X8 + X2 + X4 + X3, data = concrete)
+plot(mod.for)
+```
+
+According to the plots, model by forward selection pretty fufills noramlity, linearity, and constant variance.
+
+Use influenceIndexPlot to find influential points
+```{r}
+library(car)
+infIndexPlot(mod.for)
+```
+
+```{r}
+predict(mod.for, data.frame(X1= 200, X5=10, X8=100, X2=150, X4=180, X3=85),
+interval = 'confidence', level = 0.95)
+```
+We are 95% confident that true mean response is between 42.126 and 44.628
+```{r}
+predict(mod.for, data.frame(X1= 200, X5=10, X8=100, X2=150, X4=180, X3=85),
+interval = 'prediction', level = 0.95)
+```
+We are 95% confident that concrete compressive strength for and individual value of each predictor values is between 22.912 and 63.842
+
+(b) Backward elimination with BIC
+```{r}
+step(mod.full, scope = list(lower = mod.0, upper = mod.full), direction = 'backward', k = log(1030))
+```
+
+Do diagnostic checks
+```{r}
+mod.back<-lm(Y ~ X1 + X2 + X3 + X4 + X5 + X8, data=concrete)
+plot(mod.back)
+```
+
+According to the plots, model by forward selection pretty fufills noramlity, linearity, and constant variance.
+
+Use influenceIndexPlot to find influential points to remove
+```{r}
+library(car)
+infIndexPlot(mod.back)
+```
+
+```{r}
+anova(mod.for, mod.back)
+```
+
+The models derived by two differnt methods are same except for the order of predictors. 
+And the result of ANOVA also same.

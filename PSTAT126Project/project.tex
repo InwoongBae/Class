@@ -1,0 +1,510 @@
+\documentclass[]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+\else % if luatex or xelatex
+  \ifxetex
+    \usepackage{mathspec}
+  \else
+    \usepackage{fontspec}
+  \fi
+  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+\fi
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+% use microtype if available
+\IfFileExists{microtype.sty}{%
+\usepackage{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+\hypersetup{unicode=true,
+            pdftitle={Final Project},
+            pdfauthor={Sunnie Oh, InWoong Bae},
+            pdfborder={0 0 0},
+            breaklinks=true}
+\urlstyle{same}  % don't use monospace font for urls
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+\IfFileExists{parskip.sty}{%
+\usepackage{parskip}
+}{% else
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{0}
+% Redefines (sub)paragraphs to behave more like sections
+\ifx\paragraph\undefined\else
+\let\oldparagraph\paragraph
+\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+\let\oldsubparagraph\subparagraph
+\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+
+%%% Use protect on footnotes to avoid problems with footnotes in titles
+\let\rmarkdownfootnote\footnote%
+\def\footnote{\protect\rmarkdownfootnote}
+
+%%% Change title format to be more compact
+\usepackage{titling}
+
+% Create subtitle command for use in maketitle
+\providecommand{\subtitle}[1]{
+  \posttitle{
+    \begin{center}\large#1\end{center}
+    }
+}
+
+\setlength{\droptitle}{-2em}
+
+  \title{Final Project}
+    \pretitle{\vspace{\droptitle}\centering\huge}
+  \posttitle{\par}
+    \author{Sunnie Oh, InWoong Bae}
+    \preauthor{\centering\large\emph}
+  \postauthor{\par}
+    \date{}
+    \predate{}\postdate{}
+  
+
+\begin{document}
+\maketitle
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{concrete<-}\KeywordTok{read.table}\NormalTok{(}\StringTok{'Concrete.txt'}\NormalTok{)}
+\KeywordTok{summary}\NormalTok{(concrete)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##        X1              X2              X3               X4       
+##  Min.   :102.0   Min.   :  0.0   Min.   :  0.00   Min.   :121.8  
+##  1st Qu.:192.4   1st Qu.:  0.0   1st Qu.:  0.00   1st Qu.:164.9  
+##  Median :272.9   Median : 22.0   Median :  0.00   Median :185.0  
+##  Mean   :281.2   Mean   : 73.9   Mean   : 54.19   Mean   :181.6  
+##  3rd Qu.:350.0   3rd Qu.:142.9   3rd Qu.:118.27   3rd Qu.:192.0  
+##  Max.   :540.0   Max.   :359.4   Max.   :200.10   Max.   :247.0  
+##        X5               X6               X7              X8        
+##  Min.   : 0.000   Min.   : 801.0   Min.   :594.0   Min.   :  1.00  
+##  1st Qu.: 0.000   1st Qu.: 932.0   1st Qu.:731.0   1st Qu.:  7.00  
+##  Median : 6.350   Median : 968.0   Median :779.5   Median : 28.00  
+##  Mean   : 6.203   Mean   : 972.9   Mean   :773.6   Mean   : 45.66  
+##  3rd Qu.:10.160   3rd Qu.:1029.4   3rd Qu.:824.0   3rd Qu.: 56.00  
+##  Max.   :32.200   Max.   :1145.0   Max.   :992.6   Max.   :365.00  
+##        Y         
+##  Min.   : 2.332  
+##  1st Qu.:23.707  
+##  Median :34.443  
+##  Mean   :35.818  
+##  3rd Qu.:46.136  
+##  Max.   :82.599
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{names}\NormalTok{(concrete)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "X1" "X2" "X3" "X4" "X5" "X6" "X7" "X8" "Y"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{head}\NormalTok{(concrete)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##      X1    X2 X3  X4  X5     X6    X7  X8        Y
+## 1 540.0   0.0  0 162 2.5 1040.0 676.0  28 79.98611
+## 2 540.0   0.0  0 162 2.5 1055.0 676.0  28 61.88737
+## 3 332.5 142.5  0 228 0.0  932.0 594.0 270 40.26954
+## 4 332.5 142.5  0 228 0.0  932.0 594.0 365 41.05278
+## 5 198.6 132.4  0 192 0.0  978.4 825.5 360 44.29608
+## 6 266.0 114.0  0 228 0.0  932.0 670.0  90 47.02985
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{mod.full<-}\KeywordTok{lm}\NormalTok{(Y}\OperatorTok{~}\NormalTok{.,}\DataTypeTok{data=}\NormalTok{concrete)}
+\KeywordTok{anova}\NormalTok{(mod.full)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Analysis of Variance Table
+## 
+## Response: Y
+##             Df Sum Sq Mean Sq  F value    Pr(>F)    
+## X1           1  71172   71172 658.0463 < 2.2e-16 ***
+## X2           1  22957   22957 212.2606 < 2.2e-16 ***
+## X3           1  21636   21636 200.0464 < 2.2e-16 ***
+## X4           1  11459   11459 105.9488 < 2.2e-16 ***
+## X5           1   1360    1360  12.5785 0.0004079 ***
+## X6           1    253     253   2.3435 0.1261178    
+## X7           1      1       1   0.0058 0.9393393    
+## X8           1  47905   47905 442.9232 < 2.2e-16 ***
+## Residuals 1021 110428     108                       
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+\end{verbatim}
+
+According to the anova table above, 1021=n-8-1. So n=1030
+
+\begin{enumerate}
+\def\labelenumi{\alph{enumi})}
+\tightlist
+\item
+  forward selection with BIC
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{mod.}\DecValTok{0}\NormalTok{<-}\KeywordTok{lm}\NormalTok{(Y}\OperatorTok{~}\DecValTok{1}\NormalTok{, }\DataTypeTok{data=}\NormalTok{concrete)}
+\NormalTok{mod.full<-}\KeywordTok{lm}\NormalTok{(Y}\OperatorTok{~}\NormalTok{.,}\DataTypeTok{data=}\NormalTok{concrete)}
+\KeywordTok{step}\NormalTok{(mod.}\DecValTok{0}\NormalTok{, }\DataTypeTok{scope =} \KeywordTok{list}\NormalTok{(}\DataTypeTok{lower =}\NormalTok{ mod.}\DecValTok{0}\NormalTok{, }\DataTypeTok{upper =}\NormalTok{ mod.full), }\DataTypeTok{direction =} \StringTok{'forward'}\NormalTok{, }\DataTypeTok{k =} \KeywordTok{log}\NormalTok{(}\DecValTok{1030}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Start:  AIC=5806.38
+## Y ~ 1
+## 
+##        Df Sum of Sq    RSS    AIC
+## + X1    1     71172 216001 5520.0
+## + X5    1     38490 248683 5665.1
+## + X8    1     31061 256112 5695.4
+## + X4    1     24087 263086 5723.1
+## + X7    1      8033 279140 5784.1
+## + X6    1      7811 279362 5784.9
+## + X2    1      5220 281953 5794.4
+## + X3    1      3212 283961 5801.7
+## <none>              287173 5806.4
+## 
+## Step:  AIC=5519.97
+## Y ~ X1
+## 
+##        Df Sum of Sq    RSS    AIC
+## + X5    1   29646.5 186354 5374.8
+## + X8    1   23993.8 192007 5405.6
+## + X2    1   22957.4 193043 5411.2
+## + X4    1   17926.8 198074 5437.7
+## + X6    1    3548.0 212453 5509.8
+## + X3    1    2894.4 213106 5513.0
+## <none>              216001 5520.0
+## + X7    1     960.2 215041 5522.3
+## 
+## Step:  AIC=5374.85
+## Y ~ X1 + X5
+## 
+##        Df Sum of Sq    RSS    AIC
+## + X8    1     37498 148857 5150.4
+## + X2    1     19456 166898 5268.2
+## + X7    1      5862 180493 5348.9
+## <none>              186354 5374.8
+## + X4    1       782 185572 5377.5
+## + X3    1       741 185613 5377.7
+## + X6    1       241 186113 5380.4
+## 
+## Step:  AIC=5150.38
+## Y ~ X1 + X5 + X8
+## 
+##        Df Sum of Sq    RSS    AIC
+## + X2    1   19908.5 128948 5009.4
+## + X4    1    4868.8 143988 5123.1
+## + X7    1    3385.5 145471 5133.6
+## <none>              148857 5150.4
+## + X3    1     323.9 148533 5155.1
+## + X6    1      36.9 148820 5157.1
+## 
+## Step:  AIC=5009.43
+## Y ~ X1 + X5 + X8 + X2
+## 
+##        Df Sum of Sq    RSS    AIC
+## + X4    1    9544.7 119403 4937.2
+## + X3    1    6524.7 122423 4962.9
+## + X6    1    1737.0 127211 5002.4
+## <none>              128948 5009.4
+## + X7    1       3.5 128945 5016.3
+## 
+## Step:  AIC=4937.16
+## Y ~ X1 + X5 + X8 + X2 + X4
+## 
+##        Df Sum of Sq    RSS    AIC
+## + X3    1    8547.4 110856 4867.6
+## + X7    1    1895.7 117508 4927.6
+## <none>              119403 4937.2
+## + X6    1      24.1 119379 4943.9
+## 
+## Step:  AIC=4867.59
+## Y ~ X1 + X5 + X8 + X2 + X4 + X3
+## 
+##        Df Sum of Sq    RSS    AIC
+## <none>              110856 4867.6
+## + X6    1    44.271 110812 4874.1
+## + X7    1    29.398 110827 4874.3
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = Y ~ X1 + X5 + X8 + X2 + X4 + X3, data = concrete)
+## 
+## Coefficients:
+## (Intercept)           X1           X5           X8           X2  
+##    29.03022      0.10543      0.23900      0.11349      0.08649  
+##          X4           X3  
+##    -0.21829      0.06871
+\end{verbatim}
+
+Do diagnostic checks
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{mod.for<-}\KeywordTok{lm}\NormalTok{(Y }\OperatorTok{~}\StringTok{ }\NormalTok{X1 }\OperatorTok{+}\StringTok{ }\NormalTok{X5 }\OperatorTok{+}\StringTok{ }\NormalTok{X8 }\OperatorTok{+}\StringTok{ }\NormalTok{X2 }\OperatorTok{+}\StringTok{ }\NormalTok{X4 }\OperatorTok{+}\StringTok{ }\NormalTok{X3, }\DataTypeTok{data =}\NormalTok{ concrete)}
+\KeywordTok{plot}\NormalTok{(mod.for)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{project_files/figure-latex/unnamed-chunk-4-1.pdf}
+\includegraphics{project_files/figure-latex/unnamed-chunk-4-2.pdf}
+\includegraphics{project_files/figure-latex/unnamed-chunk-4-3.pdf}
+\includegraphics{project_files/figure-latex/unnamed-chunk-4-4.pdf}
+
+According to the plots, model by forward selection pretty fufills
+noramlity, linearity, and constant variance.
+
+Use influenceIndexPlot to find influential points to remove
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(car)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: package 'car' was built under R version 3.5.3
+\end{verbatim}
+
+\begin{verbatim}
+## Loading required package: carData
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: package 'carData' was built under R version 3.5.2
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{infIndexPlot}\NormalTok{(mod.for)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{project_files/figure-latex/unnamed-chunk-5-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{predict}\NormalTok{(mod.for, }\KeywordTok{data.frame}\NormalTok{(}\DataTypeTok{X1=} \DecValTok{200}\NormalTok{, }\DataTypeTok{X5=}\DecValTok{10}\NormalTok{, }\DataTypeTok{X8=}\DecValTok{100}\NormalTok{, }\DataTypeTok{X2=}\DecValTok{150}\NormalTok{, }\DataTypeTok{X4=}\DecValTok{180}\NormalTok{, }\DataTypeTok{X3=}\DecValTok{85}\NormalTok{),}
+\DataTypeTok{interval =} \StringTok{'confidence'}\NormalTok{, }\DataTypeTok{level =} \FloatTok{0.95}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##        fit      lwr      upr
+## 1 43.37686 42.12569 44.62803
+\end{verbatim}
+
+We are 95\% confident that true mean response is between 42.126 and
+44.628
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{predict}\NormalTok{(mod.for, }\KeywordTok{data.frame}\NormalTok{(}\DataTypeTok{X1=} \DecValTok{200}\NormalTok{, }\DataTypeTok{X5=}\DecValTok{10}\NormalTok{, }\DataTypeTok{X8=}\DecValTok{100}\NormalTok{, }\DataTypeTok{X2=}\DecValTok{150}\NormalTok{, }\DataTypeTok{X4=}\DecValTok{180}\NormalTok{, }\DataTypeTok{X3=}\DecValTok{85}\NormalTok{),}
+\DataTypeTok{interval =} \StringTok{'prediction'}\NormalTok{, }\DataTypeTok{level =} \FloatTok{0.95}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##        fit      lwr      upr
+## 1 43.37686 22.91161 63.84211
+\end{verbatim}
+
+We are 95\% confident that concrete compressive strength for and
+individual value of each predictor values is between 22.912 and 63.842
+
+\begin{enumerate}
+\def\labelenumi{(\alph{enumi})}
+\setcounter{enumi}{1}
+\tightlist
+\item
+  Backward elimination with BIC
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{step}\NormalTok{(mod.full, }\DataTypeTok{scope =} \KeywordTok{list}\NormalTok{(}\DataTypeTok{lower =}\NormalTok{ mod.}\DecValTok{0}\NormalTok{, }\DataTypeTok{upper =}\NormalTok{ mod.full), }\DataTypeTok{direction =} \StringTok{'backward'}\NormalTok{, }\DataTypeTok{k =} \KeywordTok{log}\NormalTok{(}\DecValTok{1030}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Start:  AIC=4877.49
+## Y ~ X1 + X2 + X3 + X4 + X5 + X6 + X7 + X8
+## 
+##        Df Sum of Sq    RSS    AIC
+## - X7    1       384 110812 4874.1
+## - X6    1       398 110827 4874.3
+## <none>              110428 4877.5
+## - X5    1      1046 111474 4880.3
+## - X4    1      1513 111942 4884.6
+## - X3    1      5281 115709 4918.7
+## - X2    1     11353 121781 4971.3
+## - X1    1     21533 131961 5054.0
+## - X8    1     47905 158333 5241.7
+## 
+## Step:  AIC=4874.12
+## Y ~ X1 + X2 + X3 + X4 + X5 + X6 + X8
+## 
+##        Df Sum of Sq    RSS    AIC
+## - X6    1        44 110856 4867.6
+## <none>              110812 4874.1
+## - X5    1       877 111688 4875.3
+## - X4    1      8526 119338 4943.5
+## - X3    1      8568 119379 4943.9
+## - X2    1     30693 141505 5119.0
+## - X8    1     47522 158334 5234.8
+## - X1    1     64008 174819 5336.8
+## 
+## Step:  AIC=4867.59
+## Y ~ X1 + X2 + X3 + X4 + X5 + X8
+## 
+##        Df Sum of Sq    RSS    AIC
+## <none>              110856 4867.6
+## - X5    1       865 111721 4868.7
+## - X3    1      8547 119403 4937.2
+## - X4    1     11567 122423 4962.9
+## - X2    1     32757 143613 5127.3
+## - X8    1     47731 158587 5229.5
+## - X1    1     66760 177616 5346.2
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = Y ~ X1 + X2 + X3 + X4 + X5 + X8, data = concrete)
+## 
+## Coefficients:
+## (Intercept)           X1           X2           X3           X4  
+##    29.03022      0.10543      0.08649      0.06871     -0.21829  
+##          X5           X8  
+##     0.23900      0.11349
+\end{verbatim}
+
+Do diagnostic checks
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{mod.back<-}\KeywordTok{lm}\NormalTok{(Y }\OperatorTok{~}\StringTok{ }\NormalTok{X1 }\OperatorTok{+}\StringTok{ }\NormalTok{X2 }\OperatorTok{+}\StringTok{ }\NormalTok{X3 }\OperatorTok{+}\StringTok{ }\NormalTok{X4 }\OperatorTok{+}\StringTok{ }\NormalTok{X5 }\OperatorTok{+}\StringTok{ }\NormalTok{X8, }\DataTypeTok{data=}\NormalTok{concrete)}
+\KeywordTok{plot}\NormalTok{(mod.back)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{project_files/figure-latex/unnamed-chunk-9-1.pdf}
+\includegraphics{project_files/figure-latex/unnamed-chunk-9-2.pdf}
+\includegraphics{project_files/figure-latex/unnamed-chunk-9-3.pdf}
+\includegraphics{project_files/figure-latex/unnamed-chunk-9-4.pdf}
+
+According to the plots, model by forward selection pretty fufills
+noramlity, linearity, and constant variance.
+
+Use influenceIndexPlot to find influential points to remove
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(car)}
+\KeywordTok{infIndexPlot}\NormalTok{(mod.back)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{project_files/figure-latex/unnamed-chunk-10-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{anova}\NormalTok{(mod.for, mod.back)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Analysis of Variance Table
+## 
+## Model 1: Y ~ X1 + X5 + X8 + X2 + X4 + X3
+## Model 2: Y ~ X1 + X2 + X3 + X4 + X5 + X8
+##   Res.Df    RSS Df  Sum of Sq F Pr(>F)
+## 1   1023 110856                       
+## 2   1023 110856  0 5.8208e-11
+\end{verbatim}
+
+The models derived by two differnt methods are same except for the order
+of predictors. And the result of ANOVA also same.
+
+
+\end{document}
