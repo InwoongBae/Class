@@ -1,0 +1,127 @@
+---
+title: "Project"
+author: "Inwoong Bae"
+date: '2019 11 20 '
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r message=FALSE, warning=FALSE}
+library(dplyr)
+library(survival)
+library(tidyverse)
+BH <- read.csv("C:/Users/Inwoong/Downloads/mortality/Mortality_10_BH.csv")
+BH2007 <- data.frame(subset(BH, year_of_death == 2007))
+names(BH2007)[1] <- "id"
+BH2007_filter <- data.frame(BH2007$id,BH2007$deceased_sex,BH2007$age_of_death_above_one_year,BH2007$marital_status,BH2007$highest_qualification,BH2007$household_have_electricity)
+names(BH2007_filter) <- c("ID", "Sex", "Age of Death", "martial Status", "Highest Education", "Household have electricity")
+BH2007_filter['Censored Age of Death'] <- 0
+BH2007_filter <- na.omit(mutate_all(BH2007_filter, ~ifelse(. %in% c("N/A", "NULL", ""),  NA, .)))
+BH2007_filter$`Censored Age of Death` <- ifelse(BH2007_filter$`Age of Death` > 24 , 0, 1)
+BH2007_filter['martial Status category'] <- 0
+```
+
+```{r message=FALSE, warning=FALSE}
+BH2007_filter['martial Status category'] <-  ifelse(BH2007_filter$`martial Status`== 1, 1,
+                                              ifelse(BH2007_filter$`martial Status`==2, 2,
+                                              ifelse(BH2007_filter$`martial Status`==3, 2,
+                                              ifelse(BH2007_filter$`martial Status`==4, 2,
+                                              ifelse(BH2007_filter$`martial Status`==5, 3,
+                                              ifelse(BH2007_filter$`martial Status`==6, 3,
+                                              ifelse(BH2007_filter$`martial Status`==7, 3, NA)))))))
+BH2007_filter['Highest Education Category'] <- 0
+BH2007_filter['Highest Education Category'] <- ifelse(BH2007_filter$`Highest Education`==0, 1,
+                                               ifelse(BH2007_filter$`Highest Education`==1, 1,
+                                               ifelse(BH2007_filter$`Highest Education`==2, 1,
+                                               ifelse(BH2007_filter$`Highest Education`==3, 1,
+                                               ifelse(BH2007_filter$`Highest Education`==4, 1,
+                                               ifelse(BH2007_filter$`Highest Education`==5, 1,
+                                               ifelse(BH2007_filter$`Highest Education`==6, 2,
+                                               ifelse(BH2007_filter$`Highest Education`==7, 2,
+                                               ifelse(BH2007_filter$`Highest Education`==8, 2,
+                                               ifelse(BH2007_filter$`Highest Education`==9, 1, NA))))))))))
+BH2007_filter <- na.omit(mutate_all(BH2007_filter, ~ifelse(. %in% c("N/A", "NULL", ""),  NA, .)))
+```
+
+```{r message=FALSE, warning=FALSE}
+library(survival)
+library(tidyverse)
+data("BH2007_filter")
+head(BH2007_filter)
+```
+```{r message=FALSE, warning=FALSE}
+BH2007_filter%>%str()
+```
+```{r message=FALSE, warning=FALSE}
+BH2007_filter.km = survfit(Surv(BH2007_filter$`Age of Death`,BH2007_filter$`martial Status category`)~1)
+plot(BH2007_filter.km,main="Kaplan-Meier Curves \n for Age of Death and martial status",
+xlab = "Time until death \n in years" ,
+ylab = expression(hat(S)(t)),
+col=c("steelblue","red","red"))
+```
+
+```{r message=FALSE, warning=FALSE}
+BH2007_filter.km = survfit(Surv(BH2007_filter$`Age of Death`,BH2007_filter$`Highest Education Category`)~1)
+plot(BH2007_filter.km,main="Kaplan-Meier Curves \n for Age of Death and Education",
+xlab = "Time until death \n in years" ,
+ylab = expression(hat(S)(t)),
+col=c("green","red","red"))
+```
+
+```{r message=FALSE, warning=FALSE}
+BH2007_filter.km = survfit(Surv(BH2007_filter$`Age of Death`,BH2007_filter$`Household have electricity`)~1)
+plot(BH2007_filter.km,main="Kaplan-Meier Curves \n for Age of Death and Electricity",
+xlab = "Time until death \n in years" ,
+ylab = expression(hat(S)(t)),
+col=c("red","blue","blue"))
+```
+```{r message=FALSE, warning=FALSE}
+survdiff(Surv(`Age of Death`, `martial Status category`)~Sex, data = BH2007_filter)
+```
+```{r message=FALSE, warning=FALSE}
+survdiff(Surv(`Age of Death`, `Highest Education Category`)~Sex, data = BH2007_filter)
+```
+```{r message=FALSE, warning=FALSE}
+survdiff(Surv(`Age of Death`, `Household have electricity`)~Sex, data = BH2007_filter)
+```
+```{r message=FALSE, warning=FALSE}
+BH2007_filter.km2 = survfit(Surv(`Age of Death`, `martial Status category`)~Sex, data = BH2007_filter)
+plot(BH2007_filter.km2,xlab="Survival Time until death in years with martial Status",
+ylab="Estimated Survival Probability" , col=c("red","blue"))
+legend("topright",legend=c("1=male","2=female"),
+col=c("red","blue"),pch=rep(19,2))
+```
+
+```{r message=FALSE, warning=FALSE}
+BH2007_filter.km2 = survfit(Surv(`Age of Death`, `Highest Education Category`)~Sex, data = BH2007_filter)
+plot(BH2007_filter.km2,xlab="Survival Time until death in years with education",
+ylab="Estimated Survival Probability" , col=c("red","blue"))
+legend("topright",legend=c("1=male","2=female"),
+col=c("red","blue"),pch=rep(19,2))
+```
+
+```{r message=FALSE, warning=FALSE}
+BH2007_filter.km2 = survfit(Surv(`Age of Death`, `Household have electricity`)~Sex, data = BH2007_filter)
+plot(BH2007_filter.km2,xlab="Survival Time until death in years with electricity",
+ylab="Estimated Survival Probability" , col=c("red","blue"))
+legend("topright",legend=c("1=male","2=female"),
+col=c("red","blue"),pch=rep(19,2))
+```
+```{r message=FALSE, warning=FALSE}
+coxph_age_martial <- coxph(Surv(`Age of Death`, `martial Status category`)~Sex, data = BH2007_filter)
+coxph_age_martial
+summary(coxph_age_martial)
+```
+```{r message=FALSE, warning=FALSE}
+coxph_age_education <- coxph(Surv(`Age of Death`, `Highest Education Category`)~Sex, data = BH2007_filter)
+coxph_age_education
+summary(coxph_age_education)
+```
+```{r}
+coxph_age_electricity <- coxph(Surv(`Age of Death`, `Household have electricity`)~Sex, data = BH2007_filter)
+coxph_age_electricity
+summary(coxph_age_electricity)
+```
