@@ -1,0 +1,371 @@
+---
+title: "PSTAT131 Final Project"
+author: 
+  - Inwoong Bae (6433692\805-206-6644)
+  
+date: "`r format(Sys.Date(), '%B %d, %Y')`"
+output: 
+  pdf_document:
+    latex_engine: xelatex
+---
+
+\newpage
+
+Introduction
+
+
+Thie research question is which factor has positive or negative impacts to housing price and which prediction model will show future the housing prices based on the historical dataset appropriately? This is important for regional economic analysis to predict the future values of housings and real estates. We know the price is based on the size of the house, number of bathrooms and bedrooms, how much the house is closed to transportations, location and etc, but we need to be more specific during the analysis.
+
+Data
+
+
+This dataset contains records of apartments for sale and for rent in the city of São Paulo, Brazil. The dataset consists of 16 different variables (5 numeric variables, 6 logistic variables, 5 categorial variables) and about 13,000 records of apartment sales and rents advertised in April, 2019 from multiple websites.
+
+Data Structure:
+
+Price: Final price advertised (R$ Brazilian Real)
+
+Condo: Condominium expenses (unknown values are marked as zero)
+
+Size : The property size in Square Meters m² (private areas only)
+
+Rooms: Number of bedrooms
+
+Toilets: Number of toilets (all toilets)
+
+Suites: Number of bedrooms with a private bathroom (en suite)
+
+Parking: Number of parking spots
+
+Elevator: Binary value: 1 if there is elevator in the building, 0 otherwise
+
+Furnished: Binary value: 1 if the property is funished, 0 otherwise
+
+Swimming Pool: Binary value: 1 if the property has swimming pool, 0 otherwise
+
+New: Binary value: 1 if the property is very recent, 0 otherwise
+
+District: The neighborhood and city where the property is located.
+
+Negotiation Type: Sale or Rent
+
+Property Type: The property type
+
+Latitude: Geographic location
+
+Longitude: Geographic location
+
+
+
+References
+
+https://www.kaggle.com/argonalyst/sao-paulo-real-estate-sale-rent-april-2019
+
+\newpage
+
+Methods
+
+Analysis Plan
+
+- Data processing, filtering, clustering if necessary.
+
+- Summary and plots(Scatter plot, boxplot, ...)
+
+1. Logistic Regression
+
+2. Decision Tree
+
+3. Random Forest
+
+4. Model Decision and Conclusion 
+
+
+```{r setup, echo=FALSE}
+library(knitr)
+options(digits = 6)  #limit the number of 
+```
+
+Data processing and filtering
+```{r}
+#read data from Excel file.
+saodata <- read.csv("C:/Users/Inwoong/Downloads/sao-paulo-properties-april-2019.csv")
+#overview
+dim(saodata)
+summary(saodata)
+str(saodata)
+```
+```{r}
+#check missingness in dataset
+apply(is.na(saodata), 2, sum)
+```
+```{r}
+# Select parameters in the dataset.
+## New, Property.Type is out of the model because they have only one type.
+## District is related to the location(Latitude and Longitude). I therefore remove this variable from model.
+library(dplyr)
+saodata <- dplyr::select(saodata, -c(New, Property.Type, District))
+head(saodata)
+```
+```{r}
+#plots(Price vs other parameters)
+library(scatterplot3d)
+par(mfrow=c(2,2))
+plot(saodata$Condo, saodata$Price, main = "Condo vs Price", xlab = "Condo", ylab = "Price")
+plot(saodata$Size, saodata$Price, main = "Size vs Price", xlab = "Size", ylab = "Price")
+plot(saodata$Rooms, saodata$Price, main = "Rooms vs Price", xlab = "Rooms", ylab = "Price")
+plot(saodata$Toilets, saodata$Price, main = "Toilets vs Price", xlab = "Toilets", ylab = "Price")
+par(mfrow=c(2,2))
+plot(saodata$Suites, saodata$Price, main = "Suites vs Price", xlab = "Suites", ylab = "Price")
+plot(saodata$Parking, saodata$Price, main = "Parking vs Price", xlab = "Parking", ylab = "Price")
+plot(saodata$Latitude, saodata$Price, main = "Latitude vs Price", xlab = "Latitude", ylab = "Price")
+plot(saodata$Longitude, saodata$Price, main = "Longitude vs Price", xlab = "Longitude", ylab = "Price")
+par(mfrow=c(2,2))
+plot(saodata$Elevator, saodata$Price, main = "Elevator vs Price", xlab = "Elevator", ylab = "Price")
+plot(saodata$Furnished, saodata$Price, main = "Funished vs Price", xlab = "Funished", ylab = "Price")
+plot(saodata$Swimming.Pool, saodata$Price, main = "Swimming Pool vs Price", xlab = "Swining Pool", ylab = "Price")
+plot(saodata$Negotiation.Type, saodata$Price, main = "Negotiation Type vs Price", xlab = "Negotiation Type", ylab = "Price")
+```
+```{r}
+# Split the data 
+set.seed(20200305)
+train <- sample(1:dim(saodata)[1], dim(saodata)[1]*0.75, rep=FALSE)
+test <- -train
+training_data<- saodata[train, ]
+testing_data= saodata[test, ]
+dim(training_data)
+dim(testing_data)
+```
+Logistic Regression
+```{r}
+logistic_train <- training_data
+logistic_test <- testing_data
+#get the number of average price of all housing.
+mean_log <- mean(logistic_train$Price)
+#If the price is over the average, Price is 1. If not, the price is 0.
+logistic_train$Price <- ifelse(logistic_train$Price <= mean_log , 0, 1)
+logistic_test$Price <- ifelse(logistic_test$Price <= mean_log , 0, 1)
+#Build logistic model
+#glm.fit <-  glm(Price~., data=logistic_train, family=binomial)
+glm.fit <-  glm(Price~Condo+Size+Rooms+Toilets+Suites+Parking+Elevator+Furnished+Swimming.Pool+Negotiation.Type+Latitude+Longitude, data=logistic_train, family=binomial)
+summary(glm.fit)
+```
+Interpretation of the logistic regression model
+
+The variable Condo has a coefficient 2.569e-03. For every one unit change in Condo, the log odds of getting higher price than average increases by 2.569e-03, holding other variables fixed.
+
+The variable Size has a coefficient 1.487e-01. For a one unit increase in Size, the log odds of getting higher price than average increases by 1.487e-01, holding other variables fixed.
+
+The variable Rooms has a coefficient -1.195e+00. For a one unit increase in Rooms, the log odds of getting higher price than average decreases by 1.195e+00, holding other variables fixed.
+
+The variable Toilets has a coefficient 7.601e-01. For a one unit increase in Toilets, the log odds of getting higher price than average increases by 7.601e-01, holding other variables fixed.
+
+The variable Suites has a coefficient -9.512e-01. For a one unit increase in Suites, the log odds of getting higher price than average decreases by 9.512e-01, holding other variables fixed.
+
+The variable Parking has a coefficient 9.024e-01. For a one unit increase in Parking, the log odds of getting higher price than average increases by 9.024e-01, holding other variables fixed.
+
+The variable Furnished has a coefficient 4.504e-01, meaning that the indicator function of 1 has a regression coefficient 4.504e-01. That being said, furnished room changes the log odds of getting higher price than average to increase by 4.504e-01.
+
+The variable Swimming.Pool has a coefficient 1.502e+00, meaning that the indicator function of 1 has a regression coefficient 1.502e+00. That being said, existence of a swimming pool changes the log odds of getting higher price than average to increase by 1.502e+00.
+
+The variable Negotiation.Type has a coefficient 1.610e+04, meaning that the indicator function of Sale has a regression coefficient 1.610e+04. That being said, Sale type verses Rent changes the log odds of getting higher price than average to increase by 1.610e+04.
+
+The variable Latitude has a coefficient -3.079e-02. For a one unit increase in Latitude, the log odds of getting higher price than average decreases by 3.079e-02, holding other variables fixed.
+
+The variable Longitude has a coefficient 5.625e-03. For a one unit increase in Longitude, the log odds of getting higher price than average increases by 5.625e-03, holding other variables fixed.
+```{r}
+# Model selection
+library(MASS)
+full.model <-  glm(Price~Condo+Size+Rooms+Toilets+Suites+Parking+Elevator+Furnished, data=logistic_train, family=binomial)
+summary(full.model)
+```
+When the logistic regression model has all preditors, the model has the smallest AIC, which means the full model is the most significant model. 
+
+```{r}
+phat <- predict(glm.fit, type = 'response')
+yhat <- phat > 0.5
+#Confusion matrix table
+ct <- table(obs=logistic_train$Price,pred=yhat)
+ct
+#TPR
+tpr <- ct[2,2]/(ct[2,1]+ct[2,2])
+tpr
+#FPR
+fpr <- ct[1,2]/(ct[1,1]+ct[1,2])
+fpr
+#Misclassification rate
+mean(yhat != logistic_train$Price)
+```
+```{r}
+# install.packages("ROCR")
+library(ROCR)
+# First arument is the logistic_train, second is true labels
+pred = prediction(phat, logistic_train$Price)
+perf = performance(pred, measure = "tpr", x.measure = "fpr")
+# plot ROC curve
+plot(perf, col=2, lwd=3, main="ROC curve")
+abline(0,1)
+```
+```{r}
+# Calculate AUC
+auc = performance(pred, "auc")@y.values
+auc
+```
+```{r}
+#Obtain FPR and FNR from performance() output:
+# FPR
+fpr = performance(pred, "fpr")@y.values[[1]]
+cutoff = performance(pred, "fpr")@x.values[[1]]
+# FNR
+fnr = performance(pred,"fnr")@y.values[[1]]
+# Plot FPR and FNR versus threshold values using matplot():
+# Plot
+matplot(cutoff, cbind(fpr,fnr), type="l",lwd=2, xlab="Threshold",ylab="Error Rate")
+# Add legend to the plot
+legend(0.3, 1, legend=c("False Positive Rate","False Negative Rate"),
+col=c(1,2), lty=c(1,2))
+```
+```{r}
+# Calculate the euclidean distance between (FPR,FNR) and (0,0)
+rate = as.data.frame(cbind(Cutoff=cutoff, FPR=fpr, FNR=fnr))
+rate$distance = sqrt((rate[,2])^2+(rate[,3])^2)
+# Select the probability threshold with the smallest euclidean distance
+index = which.min(rate$distance)
+best = rate$Cutoff[index]
+best
+
+# Plot
+matplot(cutoff, cbind(fpr,fnr), type="l",lwd=2, xlab="Threshold",ylab="Error Rate")
+# Add legend to the plot
+legend(0.35, 1, legend=c("False Positive Rate","False Negative Rate"),
+col=c(1,2), lty=c(1,2))
+# Add the best value
+abline(v=best, col=3, lty=3, lwd=3)
+#Therefore, our best cutoff value is 0.34998. That means, probabilities for higher price is less than 0.3089 should be predicted as Lower price and higher than 0.3089 as higher price.
+```
+Decision Tree
+```{r}
+library(tree)
+logistic_train_class <- training_data
+logistic_test_class <- testing_data
+logistic_train_class$Price <- as.factor(ifelse(logistic_train_class$Price <= mean_log , "Low", "High"))
+logistic_test_class$Price <- as.factor(ifelse(logistic_test_class$Price <= mean_log , "Low", "High"))
+
+#classification tree with class
+fit <- tree(Price ~ Condo+Size+Rooms+Toilets+Suites+Parking+Elevator+Furnished+Swimming.Pool+Negotiation.Type+Latitude+Longitude,data = logistic_train_class)
+summary(fit)
+plot(fit)
+text(fit, pretty = 0, cex = .7)
+
+
+#classification tree without class
+fit2<- tree(Price ~ Condo+Size+Rooms+Toilets+Suites+Parking+Elevator+Furnished+Swimming.Pool+Negotiation.Type+Latitude+Longitude,data = training_data)
+summary(fit2)
+plot(fit2)
+text(fit2, pretty = 0, cex = .7)
+```
+```{r}
+#Confusion matrix table
+yhat.testset <- predict(fit, logistic_test_class, type = "class")
+y.testset <- logistic_test_class$Price
+error <- table(yhat.testset, y.testset)
+error
+# Test accuracy rate
+sum(diag(error))/sum(error)
+# Test error rate (Classification Error)
+1-sum(diag(error))/sum(error)
+
+yhat.testset2 <- predict(fit2, testing_data)
+y.testset2 <- testing_data$Price
+error <- table(yhat.testset2, y.testset2)
+# Test accuracy rate
+sum(diag(error))/sum(error)
+# Test error rate (Classification Error)
+1-sum(diag(error))/sum(error)
+```
+Since the test error rate of the classification tree model with class is much lower than classification tree model without class, the classification model with class is significant.
+
+Pruned Tree
+```{r}
+prune <- prune.tree(fit, k = 0:50, method = "misclass")
+# Best size
+best.prune <- prune$size[which.min(prune$dev)]
+best.prune
+#From the output, the ‘best’ size is 4 since this number of terminal nodes corresponds to the smallest misclassification error.
+set.seed(3)
+cv <- cv.tree(fit, FUN=prune.misclass, K=50)
+# Print out cv
+cv
+
+# Prune tree
+pt.prune <- prune.misclass (fit, best=best.prune)
+# Plot pruned tree
+plot(pt.prune)
+text(pt.prune, pretty=0, col = "red", cex = .8)
+title("Pruned tree of size 4")
+
+# Predict on test set
+pred.pt.prune <- predict(pt.prune, logistic_test_class, type="class")
+# Obtain confusion matrix
+err.pt.prune <- table(pred.pt.prune, y.testset)
+err.pt.prune
+# Test accuracy rate
+sum(diag(err.pt.prune))/sum(err.pt.prune)
+# Test error rate (Classification Error)
+1-sum(diag(err.pt.prune))/sum(err.pt.prune)
+```
+Even if I applied pruned tree to get better model, the test error rate remains same.
+
+Bagging Tree and Random Forest model
+```{r}
+library(dplyr)
+library(randomForest)
+library(tree)
+#Bagging Tree
+bag <- randomForest(Price~Condo+Size+Rooms+Toilets+Suites+Parking+Elevator+Furnished+Swimming.Pool+Negotiation.Type+Latitude+Longitude,data = logistic_train_class, mtry=12, importance=TRUE)
+bag
+plot(bag)
+legend("top", colnames(bag$err.rate),col=1:4,cex=0.8,fill=1:4)
+
+#confusion matrix
+yhat.bag = predict(bag, newdata = logistic_test_class)
+bag.err = table(pred = yhat.bag, truth = logistic_test_class$Price)
+test.bag.err = 1 - sum(diag(bag.err))/sum(bag.err)
+test.bag.err
+```
+The test set error rate associated with the bagged classification tree is 0.0316
+```{R}
+#Random Forest
+rf <- randomForest(Price~Condo+Size+Rooms+Toilets+Suites+Parking+Elevator+Furnished+Swimming.Pool+Negotiation.Type+Latitude+Longitude,data = logistic_train_class, mtry=12, ntree=500, importance=TRUE)
+rf
+plot(rf)
+legend("top", colnames(rf$err.rate),col=1:4,cex=0.8,fill=1:4)
+yhat.rf = predict (rf, newdata = logistic_test_class)
+# Confusion matrix
+rf.err = table(pred = yhat.rf, truth = logistic_test_class$Price)
+test.rf.err = 1 - sum(diag(rf.err))/sum(rf.err)
+# Test error rate
+test.rf.err
+
+importance(rf)
+varImpPlot(rf, sort=T, main="Variable Importance for rf", n.var=5)
+```
+The results indicate that across all of the trees considered in the random forest, the Negotiation.Type is by far the most important variable in terms of Model Accuracy and Size is the secondary most important variable.
+
+Boosting
+```{r}
+library(gbm)
+set.seed(1)
+boost <- gbm(ifelse(Price=="High",1,0)~Condo+Size+Rooms+Toilets+Suites+Parking+Elevator+Furnished+Swimming.Pool+Negotiation.Type+Latitude+Longitude,data=logistic_train_class,distribution="bernoulli", n.trees=500, interaction.depth=4)
+summary(boost)
+
+yhat.boost <- predict(boost, newdata = logistic_test_class, n.trees=500)
+# Confusion matrix
+boost.err <- table(pred = yhat.boost, truth = logistic_test_class$Price)
+test.boost.err <-1-sum(diag(boost.err))/sum(boost.err)
+test.boost.err
+```
+Testing error seems not okay with boosting model because it is over 0.9.
+
+Conclusion
+
+According to all of tests, Randomforest model has the lowest test error rate, which means the most significant model. All predictors excluding New, District, Property.Type are included because the model has the lowest AIC when it has all of the predictors. This study has some limitation because the dataset has information of very narrow area. It might have different results if the dataset includes information from other areas in Brazil. Also, this study is not effectively explained due to lack of other predictors such as existence of transfortation, number of criminal cases near the area, etc. This study will result in having different conclusion if the dataset is expanded. 
